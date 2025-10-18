@@ -1,22 +1,10 @@
 // داده‌های اولیه پنل‌ها
 const initialPanels = [
     {
-        name: "پنل مدیریت کاربران",
-        description: "مدیریت کامل کاربران و دسترسی‌های آن‌ها",
+        name: "پنل تست",
+        description: "shayan878",
         number: 1,
-        link: "https://example.com/user-panel"
-    },
-    {
-        name: "پنل گزارش‌گیری",
-        description: "گزارش‌های تحلیلی و آماری از عملکرد سیستم",
-        number: 2,
-        link: ""
-    },
-    {
-        name: "پنل تنظیمات",
-        description: "تنظیمات کلی و شخصی‌سازی سیستم",
-        number: 3,
-        link: "https://example.com/settings"
+        link: "https://shayansheykhi.github.io/-shayan878-ah_6622/"
     }
 ];
 

@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>پنل ادمین - کلکسیون پنل‌ها</title>
+    <script src="data.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 25%, #f093fb 50%, #4facfe 75%, #00f2fe 100%);
+            min-height: 100vh;
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* مودال ورود */
+        .login-modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 9999;
+        }
+
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            animation: slideUp 0.5s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-title {
+            font-size: 1.75rem;
+            color: #333;
+            margin-bottom: 1.5rem;
+            text-align: center;
+        }
+
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+        }
+
+        .password-input {
+            width: 100%;
+            padding: 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            text-align: center;
+            letter-spacing: 0.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .password-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .error-message {
+            color: #f5576c;
+            text-align: center;
+            font-size: 0.9rem;
+            margin-top: -0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .error-message.show {
+            opacity: 1;
+        }
+
+        .user-info {
+            text-align: center;
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+
+        /* نوار منو */
+        .navbar {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .nav-buttons {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+
+        .back-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .logout-btn {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border: none;
+            padding: 0.75rem 1.5rem;
+            border-radius: 30px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(240, 147, 251, 0.4);
+        }
+
+        /* محتوای اصلی */
+        .container {
+            max-width: 800px;
+            margin: 2rem auto;
+            padding: 0 1rem;
+        }
+
+        /* فرم افزودن پنل */
+        .form-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            margin-bottom: 3rem;
+            animation: slideUp 0.6s ease;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-title {
+            font-size: 1.75rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+            text-align: center;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            margin-bottom: 0.5rem;
+            color: #555;
+            font-weight: 500;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.75rem 1rem;
+            border: 2px solid #e0e0e0;
+            border-radius: 12px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+            background: rgba(255, 255, 255, 0.8);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .form-hint {
+            font-size: 0.85rem;
+            color: #888;
+            margin-top: 0.25rem;
+        }
+
+        .add-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #4facfe, #00f2fe);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 12px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .add-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 15px 35px rgba(79, 172, 254, 0.4);
+        }
+
+        .add-btn:active {
+            transform: translateY(0);
+        }
+
+        /* انیمیشن موفقیت */
+        .success-animation {
+            animation: successPulse 0.6s ease;
+        }
+
+        @keyframes successPulse {
+            0% { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+            50% { background: linear-gradient(135deg, #56ab2f, #a8e063); }
+            100% { background: linear-gradient(135deg, #4facfe, #00f2fe); }
+        }
+
+        /* لیست پنل‌ها */
+        .panels-list {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+        }
+
+        .list-title {
+            font-size: 1.5rem;
+            margin-bottom: 1.5rem;
+            color: #333;
+        }
+
+        .panel-item {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            border-radius: 12px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.3s ease;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .panel-item:hover {
+            transform: translateX(10px);
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .panel-info h3 {
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-info p {
+            color: #666;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .panel-link {
+            color: #667eea;
+            font-size: 0.85rem;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 0.25rem;
+            transition: color 0.3s ease;
+            word-break: break-all;
+        }
+
+        .panel-link:hover {
+            color: #764ba2;
+            text-decoration: underline;
+        }
+
+        .no-link {
+            color: #999;
+            font-size: 0.85rem;
+            font-style: italic;
+        }
+
+        .delete-btn {
+            background: linear-gradient(135deg, #f093fb, #f5576c);
+            color: white;
+            border: none;
+            padding: 0.5rem 1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .delete-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+        }
+
+        /* پیام خالی */
+        .empty-list {
+            text-align: center;
+            color: #666;
+            padding: 2rem;
+            font-style: italic;
+        }
+
+        /* ریسپانسیو */
+        @media (max-width: 768px) {
+            .navbar {
+                padding: 1rem;
+            }
+            
+            .nav-buttons {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+            
+            .form-container, .panels-list {
+                padding: 1.5rem;
+            }
+            
+            .panel-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 1rem;
+            }
+            
+            .delete-btn {
+                align-self: flex-end;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- مودال ورود -->
+    <div class="login-modal" id="loginModal">
+        <div class="login-container">
+            <h2 class="login-title">ورود به پنل ادمین</h2>
+            <div class="user-info">کاربر: shayan878</div>
+            <form class="login-form" id="loginForm">
+                <input type="password" 
+                       class="password-input" 
+                       id="passwordInput" 
+                       placeholder="رمز عبور" 
+                       maxlength="4" 
+                       pattern="\d*"
+                       inputmode="numeric"
+                       required>
+                <div class="error-message" id="errorMessage">رمز عبور اشتباه است!</div>
+                <button type="submit" class="login-btn">ورود</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- نوار منو -->
+    <nav class="navbar">
+        <div class="logo">پنل ادمین 📋</div>
+        <div class="nav-buttons">
+            <a href="index.html" class="back-btn">بازگشت به صفحه اصلی</a>
+            <button class="logout-btn" onclick="logout()">خروج</button>
+        </div>
+    </nav>
+
+    <!-- محتوای اصلی -->
+    <div class="container" id="mainContent" style="display: none;">
+        <!-- فرم افزودن پنل -->
+        <div class="form-container">
+            <h2 class="form-title">افزودن پنل جدید</h2>
+            <form id="addPanelForm">
+                <div class="form-group">
+                    <label class="form-label" for="panelName">نام پنل</label>
+                    <input type="text" id="panelName" class="form-input" required>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="panelDescription">توضیحات</label>
+                    <textarea id="panelDescription" class="form-input form-textarea" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="panelNumber">شماره پنل</label>
+                    <input type="number" id="panelNumber" class="form-input" required min="1">
+                </div>
+                <div class="form-group">
+                    <label class="form-label" for="panelLink">لینک پنل (اختیاری)</label>
+                    <input type="url" id="panelLink" class="form-input" placeholder="https://example.com">
+                    <div class="form-hint">اگر پنل لینک خارجی دارد، آن را وارد کنید</div>
+                </div>
+                <button type="submit" class="add-btn">افزودن پنل</button>
+            </form>
+        </div>
+
+        <!-- لیست پنل‌های موجود -->
+        <div class="panels-list">
+            <h2 class="list-title">پنل‌های موجود</h2>
+            <div id="panelsList">
+                <!-- پنل‌ها اینجا نمایش داده می‌شوند -->
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // مقداردهی اولیه داده‌ها
+        initializeData();
+
+        // تابع برای بررسی احراز هویت
+        function checkAuth() {
+            const isAuthenticated = sessionStorage.getItem('adminAuthenticated');
+            if (isAuthenticated !== 'true') {
+                document.getElementById('loginModal').style.display = 'flex';
+                document.getElementById('mainContent').style.display = 'none';
+            } else {
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                loadPanelsList();
+            }
+        }
+
+        // تابع برای ورود
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('passwordInput').value;
+            const errorMessage = document.getElementById('errorMessage');
+            
+            if (password === '9090') {
+                sessionStorage.setItem('adminAuthenticated', 'true');
+                document.getElementById('loginModal').style.display = 'none';
+                document.getElementById('mainContent').style.display = 'block';
+                loadPanelsList();
+            } else {
+                errorMessage.classList.add('show');
+                document.getElementById('passwordInput').value = '';
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        // تابع برای خروج
+        function logout() {
+            sessionStorage.removeItem('adminAuthenticated');
+            checkAuth();
+        }
+
+        // تابع برای افزودن پنل جدید
+        document.getElementById('addPanelForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const name = document.getElementById('panelName').value;
+            const description = document.getElementById('panelDescription').value;
+            const number = document.getElementById('panelNumber').value;
+            const link = document.getElementById('panelLink').value;
+            
+            // دریافت پنل‌های موجود
+            let panels = JSON.parse(localStorage.getItem('panels')) || [];
+            
+            // افزودن پنل جدید
+            panels.push({
+                name: name,
+                description: description,
+                number: parseInt(number),
+                link: link
+            });
+            
+            // ذخیره در localStorage
+            localStorage.setItem('panels', JSON.stringify(panels));
+            
+            // اجرای انیمیشن موفقیت
+            const addBtn = document.querySelector('.add-btn');
+            addBtn.classList.add('success-animation');
+            setTimeout(() => addBtn.classList.remove('success-animation'), 600);
+            
+            // پاک کردن فرم
+            this.reset();
+            
+            // به‌روزرسانی لیست
+            loadPanelsList();
+        });
+
+        // تابع برای بارگذاری لیست پنل‌ها
+        function loadPanelsList() {
+            const panels = JSON.parse(localStorage.getItem('panels')) || [];
+            const container = document.getElementById('panelsList');
+            
+            if (panels.length === 0) {
+                container.innerHTML = '<div class="empty-list">هیچ پنلی ثبت نشده است</div>';
+                return;
+            }
+            
+            container.innerHTML = '';
+            
+            panels.forEach((panel, index) => {
+                const item = document.createElement('div');
+                item.classList.add('panel-item');
+                
+                let linkInfo = '';
+                if (panel.link && panel.link.trim() !== '') {
+                    linkInfo = `<a href="${panel.link}" target="_blank" class="panel-link">🔗 ${panel.link}</a>`;
+                } else {
+                    linkInfo = '<div class="no-link">❌ بدون لینک</div>';
+                }
+                
+                item.innerHTML = `
+                    <div class="panel-info">
+                        <h3>${panel.name} <span style="color: #667eea;">(#${panel.number})</span></h3>
+                        <p>${panel.description}</p>
+                        ${linkInfo}
+                    </div>
+                    <button class="delete-btn" onclick="deletePanel(${index})">حذف</button>
+                `;
+                container.appendChild(item);
+            });
+        }
+
+        // تابع برای حذف پنل
+        function deletePanel(index) {
+            if (confirm('آیا از حذف این پنل مطمئن هستید؟')) {
+                let panels = JSON.parse(localStorage.getItem('panels')) || [];
+                panels.splice(index, 1);
+                localStorage.setItem('panels', JSON.stringify(panels));
+                loadPanelsList();
+            }
+        }
+
+        // بررسی احراز هویت هنگام لود صفحه
+        document.addEventListener('DOMContentLoaded', checkAuth);
+    </script>
+</body>
+</html>

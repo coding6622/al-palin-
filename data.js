@@ -6,7 +6,7 @@ const initialPanels = [
         number: 1,
         link: "https://shayansheykhi.github.io/-shayan878-ah_6622/",
     }
-    ];
+    
     {
         name: "DNS",
         description: "تلگرام=shayan878",
@@ -14,7 +14,7 @@ const initialPanels = [
         link:"https://atlas878.github.io/Gami/",
             }
 
-
+];
 // تابع برای مقداردهی اولیه localStorage
 function initializeData() {
     if (!localStorage.getItem('panels')) {

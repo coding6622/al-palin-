@@ -6,6 +6,12 @@ const initialPanels = [
         number: 1,
         link: "https://shayansheykhi.github.io/-shayan878-ah_6622/"
     }
+    {
+        name: "dns",
+        description: "tel=@shayan878",
+        number: 2,
+        link: "https://atlas878.github.io/Gami/"
+    }
     
    
 ];

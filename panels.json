@@ -1,14 +1,20 @@
 [
     {
-      "name": "پنل مدیریت کاربران",
-      "description": "مدیریت کامل کاربران و دسترسی‌های آن‌ها",
+      "name": " درباره ما ",
+      "description": "   برای ارتباط با ما روی ورود ب پنل کلید فرمایید  ",
       "number": 1,
-      "link": "https://example.com/user-panel"
+      "link": "https://t.me/shayan878"
     },
     {
-      "name": "پنل گزارش‌گیری",
-      "description": "گزارش‌های آماری و تحلیلی سیستم",
+      "name": "پنل اموزش",
+      "description": "سایت اموزش برنامه نویسی ",
       "number": 2,
-      "link": "https://example.com/reports"
+      "link": "https://shayansheykhi.github.io/-shayan878-ah_6622/"
     }
+    {
+        "name": "سایت ساخت dns",
+        "description": "سایت ساخت dns (پسورد(shayan878))  ",
+        "number": 2,
+        "link": "https://atlas878.github.io/Gami/"
+      }
   ]

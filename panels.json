@@ -1,0 +1,14 @@
+[
+    {
+      "name": "پنل مدیریت کاربران",
+      "description": "مدیریت کامل کاربران و دسترسی‌های آن‌ها",
+      "number": 1,
+      "link": "https://example.com/user-panel"
+    },
+    {
+      "name": "پنل گزارش‌گیری",
+      "description": "گزارش‌های آماری و تحلیلی سیستم",
+      "number": 2,
+      "link": "https://example.com/reports"
+    }
+  ]

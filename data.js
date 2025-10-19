@@ -20,9 +20,10 @@ const initialPanels = [
     }
 ];
 
-// تابع برای مقداردهی اولیه localStorage
-function initializeData() {
-    if (!localStorage.getItem('panels')) {
-        localStorage.setItem('panels', JSON.stringify(initialPanels));
+async function fetchPanels() {
+  const response = await fetch("https://coding6622.github.io/al-palin-/<username>/<repo>/main/panels.json");
+  const panels = await response.json();
+  return panels;
+}
     }
 }

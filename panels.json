@@ -1,21 +1,20 @@
 [
-    {
-      "name": " درباره ما ",
-      "description": "   برای ارتباط با ما روی ورود ب پنل کلید فرمایید  ",
-      "number": 1,
-      "link": "https://t.me/shayan878"
-    },
-    {
-      "name": "پنل اموزش",
-      "description": "سایت اموزش برنامه نویسی ",
-      "number": 2,
-      "link": "https://shayansheykhi.github.io/-shayan878-ah_6622/"
-    }
-    {
-        "name": "سایت ساخت dns",
-        "description": "سایت ساخت dns (پسورد(shayan878))  ",
-        "number": 3,
-        "link": "https://atlas878.github.io/Gami/"
-      }
-  ]
-
+  {
+    "name": "درباره ما",
+    "description": "برای ارتباط با ما روی ورود به پنل کلیک فرمایید",
+    "number": 1,
+    "link": "https://t.me/shayan878"
+  },
+  {
+    "name": "پنل آموزش",
+    "description": "سایت آموزش برنامه نویسی",
+    "number": 2,
+    "link": "https://shayansheykhi.github.io/-shayan878-ah_6622/"
+  },
+  {
+    "name": "سایت ساخت DNS",
+    "description": "سایت ساخت DNS (پسورد: shayan878)",
+    "number": 3,
+    "link": "https://atlas878.github.io/Gami/"
+  }
+]

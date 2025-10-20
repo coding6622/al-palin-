@@ -1,7 +1,7 @@
 [
   {
     "name": "درباره ما",
-    "description": "برای ارتباط با ما روی ورود به پنل کلیک فرمایید",
+    "description": "برای ارتباط با ما روی ورود به پنل کلیک بفرمایید",
     "number": 1,
     "link": "https://t.me/shayan878"
   },
@@ -17,4 +17,11 @@
     "number": 3,
     "link": "https://atlas878.github.io/Gami/"
   }
+  {
+    "name": "ربات تلگرام",
+    "description": "ربات تلگرام  ساخت  DNS ",
+    "number": 4,
+    "link": "https://t.me/shayan878_dns_bot"
+  }
 ]
+

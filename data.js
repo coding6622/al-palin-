@@ -21,7 +21,7 @@ const initialPanels = [
   {
     name: "فست فودی",
     description: "نمایشی هست @shayan878",
-    number: 5,
+    number: 4,
     link: "https://coding6622.github.io/food/"
   }
 ];

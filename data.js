@@ -18,6 +18,12 @@ const initialPanels = [
         number: 3,
         link: "https://atlas878.github.io/Gami/"
     }
+    {
+        name: "فست فودی",
+        description: "نمایشی هسته @shayan878",
+        number:5,
+        link: "https://coding6622.github.io/food/"
+    },
 ];
 
 async function fetchPanels() {
